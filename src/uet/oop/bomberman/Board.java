@@ -26,6 +26,7 @@ public class Board implements IRender {
 	protected Game _game;
 	protected Keyboard _input;
 	protected Screen _screen;
+	public Bomber _bomber;
 	
 	public Entity[] _entities;
 	public List<Character> _characters = new ArrayList<>();
@@ -250,6 +251,8 @@ public class Board implements IRender {
 	
 	public void addCharacter(Character e) {
 		_characters.add(e);
+		if(e instanceof Bomber)
+			_bomber = (Bomber) e;
 	}
 	
 	public void addBomb(Bomb e) {

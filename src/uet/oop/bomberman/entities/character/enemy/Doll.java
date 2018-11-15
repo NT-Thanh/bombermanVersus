@@ -9,7 +9,7 @@ public class Doll extends Enemy {
 
 
     public Doll(int x, int y, Board board) {
-        super(x, y, board, Sprite.doll_dead, Game.getBomberSpeed(), 400);
+        super(x, y, board, Sprite.doll_dead, 1, 400);
 
         _sprite = Sprite.doll_right1;
 

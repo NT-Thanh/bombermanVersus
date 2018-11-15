@@ -3,13 +3,9 @@ package uet.oop.bomberman.entities.character;
 import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.Entity;
-import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.bomb.Bomb;
 import uet.oop.bomberman.entities.bomb.Flame;
 import uet.oop.bomberman.entities.character.enemy.Enemy;
-import uet.oop.bomberman.entities.tile.Grass;
-import uet.oop.bomberman.entities.tile.Wall;
-import uet.oop.bomberman.entities.tile.destroyable.Brick;
 import uet.oop.bomberman.entities.tile.item.BombItem;
 import uet.oop.bomberman.entities.tile.item.FlameItem;
 import uet.oop.bomberman.entities.tile.item.Item;
@@ -26,6 +22,14 @@ public class Bomber extends Character {
 
     private List<Bomb> _bombs;
     protected Keyboard _input;
+
+    protected static final int BOMBRATE = 1;
+    protected static final int BOMBRADIUS = 1;
+    protected static final double BOMBERSPEED = 1.0;
+
+    private int bombRate = BOMBRATE;
+    private int bombRadius = BOMBRADIUS;
+    private double bomberSpeed = BOMBERSPEED;
 
     /**
      * nếu giá trị này < 0 thì cho phép đặt đối tượng Bomb tiếp theo,
@@ -78,19 +82,19 @@ public class Bomber extends Character {
     /**
      * Kiểm tra xem có đặt được bom hay không? nếu có thì đặt bom tại vị trí hiện tại của Bomber
      */
-    private void detectPlaceBomb() {
+    protected void detectPlaceBomb() {
         // TODO: kiểm tra xem phím điều khiển đặt bom có được gõ và giá trị _timeBetweenPutBombs, Game.getBombRate() có thỏa mãn hay không
         // TODO:  Game.getBombRate() sẽ trả về số lượng bom có thể đặt liên tiếp tại thời điểm hiện tại
         // TODO: _timeBetweenPutBombs dùng để ngăn chặn Bomber đặt 2 Bomb cùng tại 1 vị trí trong 1 khoảng thời gian quá ngắn
         // TODO: nếu 3 điều kiện trên thỏa mãn thì thực hiện đặt bom bằng placeBomb()
         // TODO: sau khi đặt, nhớ giảm số lượng Bomb Rate và reset _timeBetweenPutBombs về 0
-        if(_input.space && _timeBetweenPutBombs < 0 && Game.getBombRate()>0){
+        if(_input.space && _timeBetweenPutBombs < 0 && bombRate>0){
             int xt = Coordinates.pixelToTile(_x + _sprite.getSize() / 2);
             int yt = Coordinates.pixelToTile((_y - _sprite.getSize() / 2));
 
             placeBomb(xt, yt);
-            Game.addBombRate(-1);
-            _timeBetweenPutBombs = 30;
+            bombRate--;
+            _timeBetweenPutBombs = 20;
         }
     }
 
@@ -108,10 +112,9 @@ public class Bomber extends Character {
             b = bs.next();
             if (b.isRemoved()) {
                 bs.remove();
-                Game.addBombRate(1);
+                bombRate++;
             }
         }
-
     }
 
     @Override
@@ -134,13 +137,13 @@ public class Bomber extends Character {
         // TODO: xử lý nhận tín hiệu điều khiển hướng đi từ _input và gọi move() để thực hiện di chuyển
         // TODO: nhớ cập nhật lại giá trị cờ _moving khi thay đổi trạng thái di chuyển
         int xa = 0, ya = 0;
-        if(_input.up) ya--;
-        if(_input.down) ya++;
-        if(_input.left) xa--;
-        if(_input.right) xa++;
+        if(_input.w) ya--;
+        if(_input.s) ya++;
+        if(_input.a) xa--;
+        if(_input.d) xa++;
 
         if(xa != 0 || ya != 0)  {
-            move(xa * Game.getBomberSpeed(), ya * Game.getBomberSpeed());
+            move(xa * bomberSpeed, ya * bomberSpeed);
             _moving = true;
         } else _moving = false;
     }
@@ -190,15 +193,21 @@ public class Bomber extends Character {
             return;
 
         if(i instanceof BombItem){
-            Game.addBombRate(1);
+            bombRate++;
         }
         else if(i instanceof FlameItem){
-            Game.addBombRadius(1);
+            bombRadius++;
         }
         else if(i instanceof SpeedItem){
-            Game.addBomberSpeed(0.3);
+            bomberSpeed+=0.3;
         }
         _board.getGame().soundEffect.playItemGet();
+    }
+
+    public void resetPowerups(){
+        bombRate = BOMBRATE;
+        bomberSpeed = BOMBERSPEED;
+        bombRadius = BOMBRADIUS;
     }
 
     @Override
@@ -211,6 +220,9 @@ public class Bomber extends Character {
         }
         if(e instanceof Flame){
             kill();
+            return false;
+        }
+        if(e instanceof Character){
             return false;
         }
         return true;
@@ -249,5 +261,17 @@ public class Bomber extends Character {
                 }
                 break;
         }
+    }
+
+    public int getBombRate() {
+        return bombRate;
+    }
+
+    public int getBombRadius() {
+        return bombRadius;
+    }
+
+    public double getBomberSpeed() {
+        return bomberSpeed;
     }
 }

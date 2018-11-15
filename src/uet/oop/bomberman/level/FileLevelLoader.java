@@ -5,6 +5,7 @@ import uet.oop.bomberman.Board;
 import uet.oop.bomberman.Game;
 import uet.oop.bomberman.entities.LayeredEntity;
 import uet.oop.bomberman.entities.character.Bomber;
+import uet.oop.bomberman.entities.character.ReversedBomber;
 import uet.oop.bomberman.entities.character.enemy.*;
 import uet.oop.bomberman.entities.tile.Grass;
 import uet.oop.bomberman.entities.tile.Portal;
@@ -92,8 +93,14 @@ public class FileLevelLoader extends LevelLoader {
 					layer.addBeforeTop(new Portal(y, x, _board, Sprite.portal));
 					_board.addEntity(pos, layer);
 				}
+				// Add Characters
 				else if(_map[x][y] == 'p'){
 					_board.addCharacter( new Bomber(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board) );
+					Screen.setOffset(0, 0);
+					_board.addEntity(pos, new Grass(y, x, Sprite.grass));
+				}
+				else if(_map[x][y] == 'r'){
+					_board.addCharacter( new ReversedBomber(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board) );
 					Screen.setOffset(0, 0);
 					_board.addEntity(pos, new Grass(y, x, Sprite.grass));
 				}

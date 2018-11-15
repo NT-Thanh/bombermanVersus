@@ -6,6 +6,7 @@ import uet.oop.bomberman.entities.AnimatedEntitiy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.character.Bomber;
 import uet.oop.bomberman.entities.character.Character;
+import uet.oop.bomberman.entities.character.ReversedBomber;
 import uet.oop.bomberman.graphics.Screen;
 import uet.oop.bomberman.graphics.Sprite;
 import uet.oop.bomberman.level.Coordinates;
@@ -90,7 +91,7 @@ public class Bomb extends AnimatedEntitiy {
 		// TODO: tạo các Flame
 		_flames = new Flame[4];
 		for(int i=0; i<4; i++){
-			_flames[i] = new Flame((int)_x, (int)_y, i, Game.getBombRadius(), _board);
+			_flames[i] = new Flame((int)_x, (int)_y, i, _board.getGame().getBombRadius(), _board);
 		}
 		_board.getGame().soundEffect.playBombExplode();
 	}
@@ -111,7 +112,7 @@ public class Bomb extends AnimatedEntitiy {
 	public boolean collide(Entity e) {
         // TODO: xử lý khi Bomber đi ra sau khi vừa đặt bom (_allowedToPassThru)
         // TODO: xử lý va chạm với Flame của Bomb khác
-		if(e instanceof Bomber) {
+		if(e instanceof Bomber || e instanceof ReversedBomber) {
 			double diffX = e.getX() - Coordinates.tileToPixel(getX());
 			double diffY = e.getY() - Coordinates.tileToPixel(getY());
 

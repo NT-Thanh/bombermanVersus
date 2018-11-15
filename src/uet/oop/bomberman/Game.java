@@ -24,18 +24,18 @@ public class Game extends Canvas {
 	
 	public static final String TITLE = "BombermanGame";
 	
-	private static final int BOMBRATE = 1;
-	private static final int BOMBRADIUS = 1;
-	private static final double BOMBERSPEED = 1.0;
+//	private static final int BOMBRATE = 1;
+//	private static final int BOMBRADIUS = 1;
+//	private static final double BOMBERSPEED = 1.0;
 	
 	public static final int TIME = 200;
 	public static final int POINTS = 0;
 	
 	protected static int SCREENDELAY = 3;
 
-	protected static int bombRate = BOMBRATE;
-	protected static int bombRadius = BOMBRADIUS;
-	protected static double bomberSpeed = BOMBERSPEED;
+//	protected static int bombRate = BOMBRATE;
+//	protected static int bombRadius = BOMBRADIUS;
+//	protected static double bomberSpeed = BOMBERSPEED;
 
 
 	protected static int bomberLives = 3;
@@ -163,21 +163,20 @@ public class Game extends Canvas {
 	}
 
 	public void resetBomber(){
-		bombRate = BOMBRATE;
-		bombRadius = BOMBRADIUS;
-		bomberSpeed = BOMBERSPEED;
+		if(_board != null)
+			_board._bomber.resetPowerups();
 	}
 	
-	public static double getBomberSpeed() {
-		return bomberSpeed;
+	public double getBomberSpeed() {
+		return _board._bomber.getBomberSpeed();
 	}
-	
-	public static int getBombRate() {
-		return bombRate;
+
+	public int getBombRate() {
+		return _board._bomber.getBombRate();
 	}
-	
-	public static int getBombRadius() {
-		return bombRadius;
+
+	public int getBombRadius() {
+		return _board._bomber.getBombRadius();
 	}
 
 	public static int getBomberLives() {
@@ -188,17 +187,17 @@ public class Game extends Canvas {
 		Game.bomberLives += bomberLives;
 	}
 
-	public static void addBomberSpeed(double i) {
-		bomberSpeed += i;
-	}
-	
-	public static void addBombRadius(int i) {
-		bombRadius += i;
-	}
-	
-	public static void addBombRate(int i) {
-		bombRate += i;
-	}
+//	public static void addBomberSpeed(double i) {
+//		bomberSpeed += i;
+//	}
+//
+//	public static void addBombRadius(int i) {
+//		bombRadius += i;
+//	}
+//
+//	public static void addBombRate(int i) {
+//		bombRate += i;
+//	}
 
 	public void resetScreenDelay() {
 		_screenDelay = SCREENDELAY;

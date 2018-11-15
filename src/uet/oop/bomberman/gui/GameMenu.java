@@ -21,6 +21,7 @@ public class GameMenu extends MenuBar {
     private MenuItem commandItem;
     private MenuItem about;
     private MenuItem help;
+    private MenuItem versus;
     private MenuItem[] levelItems;
 
     public GameMenu(Board board){
@@ -33,6 +34,7 @@ public class GameMenu extends MenuBar {
         about = new MenuItem("About");
         help = new MenuItem("Help");
         commandItem = new MenuItem("Command");
+        versus = new MenuItem("Versus");
         pauseItem = new MenuItem("Pause");
         resumeItem = new MenuItem("Resume");
         resumeItem.setEnabled(false);
@@ -85,6 +87,12 @@ public class GameMenu extends MenuBar {
                 _board.loadLevel(5);
             }
         });
+        versus.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                _board.loadLevel(0);
+            }
+        });
         pauseItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,6 +140,7 @@ public class GameMenu extends MenuBar {
         gameMe.add(resumeItem);
         gameMe.add(commandItem);
         gameMe.add(levels);
+        gameMe.add(versus);
 
         this.add(gameMe);
         this.add(more);
